@@ -1,0 +1,25 @@
+Mejorar mesh de integración, para no evitar torque cuando la elasticidad es grande
+Más dinamismo en generación?
+Optimizar Domega
+
+
+CASOS INICIALES INTERESANTES:
+Permanencia en pared
+    a = b = 1
+    PointMass pointMass;
+    pointMass.m = 1;
+    pointMass.pos = Vector<double>{0.0, 0.5, 0.5};
+    pointMass.vel = Vector<double>{0.5, 0.0, 0.0};
+
+    Surface S(ellipsoid, 0, M_PI, 0, 2*M_PI);
+
+    // I = MR^2 = M
+    // Masa y momento de inercia correspondiente
+    double M = 10;  // ESFERA, TEST
+    Matrix<double> I = (1./2) * M * Identity<double>(3);
+    I(0,0) *= a*a + b*b;
+    I(1,1) *= a*a + b*b;
+    I(2,2) *= 2*b*b;
+
+    // Definicion de sistema
+    DynamicBilliard system(pointMass, S, M, I, {0,0,0}, {0.0,0,0.0}, {0,0.1,0}, {0,0,0}, 100, 0.3, 10);
